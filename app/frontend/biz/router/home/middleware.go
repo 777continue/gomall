@@ -15,8 +15,6 @@ func rootMw() []app.HandlerFunc {
 		func(ctx context.Context, c *app.RequestContext) {
 			s := sessions.Default(c)
 			ctx = context.WithValue(ctx, home.SessionUserId, s.Get("user_id"))
-			//userid := ctx.Value(home.SessionUserId)
-			//hlog.Warn(fmt.Sprintf("home_mw_userid = %d", userid))
 			c.Next(ctx)
 		},
 	}

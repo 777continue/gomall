@@ -2,14 +2,12 @@ package home
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/777continue/gomall/app/frontend/biz/service"
 	"github.com/777continue/gomall/app/frontend/biz/utils"
 	common "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/common"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
@@ -37,9 +35,8 @@ func Home(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	//midware resp
-	userid := ctx.Value(SessionUserId)
-	hlog.Warn(fmt.Sprintf("Home_resp_userid = %d", userid))
 	resp["user_id"] = ctx.Value(SessionUserId)
+	
 	c.HTML(consts.StatusOK, "home", resp)
 
 	//utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)

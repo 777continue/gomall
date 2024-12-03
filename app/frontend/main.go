@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/777continue/gomall/app/frontend/biz/router"
+	"github.com/777continue/gomall/app/frontend/client"
 	"github.com/777continue/gomall/app/frontend/conf"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
@@ -32,6 +33,7 @@ func main() {
 	_ = godotenv.Load()
 	// init dal
 	// dal.Init()
+	client.Init()
 	address := conf.GetConf().Hertz.Address
 	h := server.New(server.WithHostPorts(address))
 
@@ -52,25 +54,6 @@ func main() {
 	h.Spin()
 }
 
-/*
-	func md() []app.HandlerFunc {
-		return []app.HandlerFunc{
-			func(ctx context.Context, c *app.RequestContext) {
-				s := sessions.Default(c)
-				ctx = context.WithValue(ctx, SessionUserId, s.Get("user_id"))
-				c.Next(ctx)
-			},
-			func(ctx context.Context, c *app.RequestContext) {
-				s := sessions.Default(c)
-				userid := s.Get("user_id")
-				if userid == nil {
-					c.Redirect(302, []byte("sign-in?next=/"+c.FullPath()))
-					c.Abort()
-				}
-			},
-		}
-	}
-*/
 func addRouter(h *server.Hertz) { //
 	hlog.Warn("hello")
 	h.GET("/about",
