@@ -8,7 +8,7 @@ import (
 
 var (
 	// todo edit custom config
-	defaultClient     RPCClient
+	Client            RPCClient
 	defaultDstService = "user"
 	defaultClientOpts = []client.Option{
 		client.WithHostPorts("127.0.0.1:8888"),
@@ -22,9 +22,9 @@ func init() {
 
 func DefaultClient() RPCClient {
 	once.Do(func() {
-		defaultClient = newClient(defaultDstService, defaultClientOpts...)
+		Client = newClient(defaultDstService, defaultClientOpts...)
 	})
-	return defaultClient
+	return Client
 }
 
 func newClient(dstService string, opts ...client.Option) RPCClient {
@@ -36,5 +36,5 @@ func newClient(dstService string, opts ...client.Option) RPCClient {
 }
 
 func InitClient(dstService string, opts ...client.Option) {
-	defaultClient = newClient(dstService, opts...)
+	Client = newClient(dstService, opts...)
 }

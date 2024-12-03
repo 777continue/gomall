@@ -36,7 +36,7 @@ func Home(ctx context.Context, c *app.RequestContext) {
 	}
 	//midware resp
 	resp["user_id"] = ctx.Value(SessionUserId)
-	
+
 	c.HTML(consts.StatusOK, "home", resp)
 
 	//utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)

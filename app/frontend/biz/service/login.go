@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"github.com/777continue/gomall/app/frontend/client"
 	auth "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/auth"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/user"
+	rpc_user "github.com/777continue/gomall/rpc_gen/rpc/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/sessions"
 )
@@ -22,7 +22,7 @@ func NewLoginService(Context context.Context, RequestContext *app.RequestContext
 func (h *LoginService) Run(req *auth.LoginReq) (redirect string, err error) {
 	// todo edit your code
 
-	resp, err := client.UserClient.Login(h.Context, &user.LoginReq{
+	resp, err := rpc_user.Client.Login(h.Context, &user.LoginReq{
 		Email:    req.Email,
 		Password: req.Password,
 	})
