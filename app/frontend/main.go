@@ -10,6 +10,7 @@ import (
 
 	"github.com/777continue/gomall/app/frontend/biz/router"
 	"github.com/777continue/gomall/app/frontend/conf"
+	rpc_product "github.com/777continue/gomall/rpc_gen/rpc/product"
 	rpc_user "github.com/777continue/gomall/rpc_gen/rpc/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
@@ -33,7 +34,10 @@ func main() {
 	_ = godotenv.Load()
 	// init dal
 	// dal.Init()
-	rpc_user.DefaultClient()
+
+	// init rpc
+	InitClient()
+
 	address := conf.GetConf().Hertz.Address
 	h := server.New(server.WithHostPorts(address))
 
@@ -53,7 +57,10 @@ func main() {
 
 	h.Spin()
 }
-
+func InitClient() {
+	rpc_user.DefaultClient()
+	rpc_product.DefaultClient()
+}
 func addRouter(h *server.Hertz) { //
 	h.GET("/about",
 		func(ctx context.Context, c *app.RequestContext) {

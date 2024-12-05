@@ -1,15 +1,19 @@
 export ROOT_MOD=github.com/777continue/gomall
 .PHONY: server  #target
-srv:  # command 
+server:  # command 
 	@cd app/frontend && air
 
 .PHONY: rpc-user  #target
 user:  # command 
 	@cd app/user && air
 
+.PHONY: rpc-product  #target
+product:  # command 
+	@cd app/product && air
+
 .PHONY: gen-frontend
 gen-frontend:
-	@cd app/frontend && cwgo server  --type HTTP --service frontend --module github.com/777continue/gomall/app/frontend --idl ../../idl/frontend/auth_page.proto -I ../../idl
+	@cd app/frontend && cwgo server  --type HTTP --service frontend --module github.com/777continue/gomall/app/frontend --idl ../../idl/frontend/category_page.proto -I ../../idl
 
 .PHONY: gen-user
 gen-user-client:
