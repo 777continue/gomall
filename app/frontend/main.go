@@ -10,6 +10,7 @@ import (
 
 	"github.com/777continue/gomall/app/frontend/biz/router"
 	"github.com/777continue/gomall/app/frontend/conf"
+	rpc_cart "github.com/777continue/gomall/rpc_gen/rpc/cart"
 	rpc_product "github.com/777continue/gomall/rpc_gen/rpc/product"
 	rpc_user "github.com/777continue/gomall/rpc_gen/rpc/user"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -60,6 +61,7 @@ func main() {
 func InitClient() {
 	rpc_user.DefaultClient()
 	rpc_product.DefaultClient()
+	rpc_cart.DefaultClient()
 }
 func addRouter(h *server.Hertz) { //
 	h.GET("/about",

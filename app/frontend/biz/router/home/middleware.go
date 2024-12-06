@@ -5,7 +5,7 @@ package home
 import (
 	"context"
 
-	home "github.com/777continue/gomall/app/frontend/biz/handler/home"
+	frontendUtils "github.com/777continue/gomall/app/frontend/utils"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/sessions"
 )
@@ -14,7 +14,7 @@ func rootMw() []app.HandlerFunc {
 	return []app.HandlerFunc{
 		func(ctx context.Context, c *app.RequestContext) {
 			s := sessions.Default(c)
-			ctx = context.WithValue(ctx, home.SessionUserId, s.Get("user_id"))
+			ctx = context.WithValue(ctx, frontendUtils.SessionUserId, s.Get("user_id"))
 			c.Next(ctx)
 		},
 	}

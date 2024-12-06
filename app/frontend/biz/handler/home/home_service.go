@@ -6,6 +6,7 @@ import (
 	"github.com/777continue/gomall/app/frontend/biz/service"
 	"github.com/777continue/gomall/app/frontend/biz/utils"
 	common "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/common"
+	frontendUtils "github.com/777continue/gomall/app/frontend/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -13,11 +14,6 @@ import (
 
 // Home .
 // @router / [GET]
-type SessionUserIdKey string
-
-const (
-	SessionUserId SessionUserIdKey = "user_id"
-)
 
 func Home(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -35,11 +31,10 @@ func Home(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	//midware resp
-	resp["user_id"] = ctx.Value(SessionUserId)
+	resp["user_id"] = ctx.Value(frontendUtils.SessionUserId)
 
 	c.HTML(consts.StatusOK, "home", resp)
 
-	//utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
 func Test(ctx context.Context, c *app.RequestContext) {
 	resp := map[string]any{"Title": "Test"}

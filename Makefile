@@ -1,19 +1,24 @@
 export ROOT_MOD=github.com/777continue/gomall
-.PHONY: server  #target
+.PHONY: server rpc-user rpc-product rpc-cart all-services
+
 server:  # command 
 	@cd app/frontend && air
 
-.PHONY: rpc-user  #target
-user:  # command 
+rpc-user:  # command 
 	@cd app/user && air
 
-.PHONY: rpc-product  #target
-product:  # command 
+rpc-product:  # command 
 	@cd app/product && air
+
+rpc-cart:  # command
+	@cd app/cart && air
+
+all-services: server rpc-user rpc-product rpc-cart
+	@echo "All services are started."
 
 .PHONY: gen-frontend
 gen-frontend:
-	@cd app/frontend && cwgo server  --type HTTP --service frontend --module github.com/777continue/gomall/app/frontend --idl ../../idl/frontend/category_page.proto -I ../../idl
+	@cd app/frontend && cwgo server  --type HTTP --service frontend --module github.com/777continue/gomall/app/frontend --idl ../../idl/frontend/cart_page.proto -I ../../idl
 
 .PHONY: gen-user
 gen-user-client:
@@ -22,8 +27,14 @@ gen-user-server:		# .eg   --pass "-use client module path"
 	@cd app/user && cwgo server --type RPC --service user --module github.com/777continue/gomall/app/user --pass "-use github.com/777continue/gomall/rpc_gen/kitex_gen" --I ../../idl  --idl ../../idl/user.proto
 
 .PHONY: gen-product
-wcnm: 
+gen-product: 
 	@cd rpc_gen && cwgo client --type RPC --service product --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/product.proto
 	@cd app/product && cwgo server --type RPC --service product --module ${ROOT_MOD}/app/product --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen" --I ../../idl  --idl ../../idl/product.proto
+
+.PHONY: gen-cart
+gen-cart: 
+	@cd rpc_gen && cwgo client --type RPC --service cart --module ${ROOT_MOD}/rpc_gen --I ../idl --idl ../idl/cart.proto
+	@cd app/cart && cwgo server --type RPC --service cart --module ${ROOT_MOD}/app/cart --pass "-use ${ROOT_MOD}/rpc_gen/kitex_gen" --I ../../idl  --idl ../../idl/cart.proto
+
 
 

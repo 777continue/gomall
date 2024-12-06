@@ -35,5 +35,6 @@ func (h *RegisterService) Run(req *auth.RegisterReq) (resp *common.Empty, err er
 	if err != nil {
 		return nil, err
 	}
+	// empty struct -> complier don't give error
 	return
 }
