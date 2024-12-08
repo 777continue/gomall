@@ -9,6 +9,7 @@ import (
 	frontendUtils "github.com/777continue/gomall/app/frontend/utils"
 
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
@@ -26,6 +27,7 @@ func Home(ctx context.Context, c *app.RequestContext) {
 
 	//service resp
 	resp, err := service.NewHomeService(ctx, c).Run(&req)
+	hlog.Debug(resp)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -35,8 +37,4 @@ func Home(ctx context.Context, c *app.RequestContext) {
 
 	c.HTML(consts.StatusOK, "home", resp)
 
-}
-func Test(ctx context.Context, c *app.RequestContext) {
-	resp := map[string]any{"Title": "Test"}
-	c.HTML(consts.StatusOK, "test", resp)
 }

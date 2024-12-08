@@ -20,13 +20,14 @@ func NewHomeService(Context context.Context, RequestContext *app.RequestContext)
 }
 
 func (h *HomeService) Run(req *common.Empty) (map[string]any, error) {
-	products, err := product_client.Client.ListProducts(h.Context, &product.ListProductsReq{})
+	resp, err := product_client.Client.ListProducts(h.Context, &product.ListProductsReq{})
+
 	if err != nil {
 		return nil, err
 	}
 
 	return utils.H{
 		"title": "Hot sale",
-		"items": products.Products,
+		"items": resp.Products,
 	}, nil
 }

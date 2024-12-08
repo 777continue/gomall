@@ -21,7 +21,7 @@ func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, d
 	c.JSON(code, data)
 }
 
-func WarpCartResponse(ctx context.Context, c *app.RequestContext, resp map[string]any) map[string]any {
+func WarpResponse(ctx context.Context, c *app.RequestContext, resp map[string]any) map[string]any {
 	userId := frontendUtils.GetUserIdFromCtx(ctx)
 	resp["user_id"] = userId
 

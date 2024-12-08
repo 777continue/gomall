@@ -18,7 +18,7 @@ func TestHome(t *testing.T) {
 	w := ut.PerformRequest(h.Engine, "GET", path, body, header)
 	resp := w.Result()
 	t.Log(string(resp.Body()))
-
+	//fmt.Println(string(resp.Body()))
 	// todo edit your unit test.
 	// assert.DeepEqual(t, 200, resp.StatusCode())
 	// assert.DeepEqual(t, "null", string(resp.Body()))

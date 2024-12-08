@@ -4,15 +4,17 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"time"
 
 	"github.com/777continue/gomall/app/frontend/biz/router"
 	"github.com/777continue/gomall/app/frontend/conf"
-	rpc_cart "github.com/777continue/gomall/rpc_gen/rpc/cart"
-	rpc_product "github.com/777continue/gomall/rpc_gen/rpc/product"
-	rpc_user "github.com/777continue/gomall/rpc_gen/rpc/user"
+	"github.com/777continue/gomall/app/frontend/mw"
+	cart_client "github.com/777continue/gomall/rpc_gen/rpc/cart"
+	checkout_client "github.com/777continue/gomall/rpc_gen/rpc/checkout"
+	payment_client "github.com/777continue/gomall/rpc_gen/rpc/payment"
+	product_client "github.com/777continue/gomall/rpc_gen/rpc/product"
+	user_client "github.com/777continue/gomall/rpc_gen/rpc/user"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -59,25 +61,16 @@ func main() {
 	h.Spin()
 }
 func InitClient() {
-	rpc_user.DefaultClient()
-	rpc_product.DefaultClient()
-	rpc_cart.DefaultClient()
+	user_client.DefaultClient()
+	product_client.DefaultClient()
+	cart_client.DefaultClient()
+	checkout_client.DefaultClient()
+	payment_client.DefaultClient()
 }
 func addRouter(h *server.Hertz) { //
-	h.GET("/about",
-		func(ctx context.Context, c *app.RequestContext) {
-			s := sessions.Default(c)
-			userid := s.Get("user_id")
-			hlog.Warn(fmt.Sprintf("userid = %d", userid))
-			if userid == nil {
-				c.Redirect(302, []byte("sign-in?next="+c.FullPath()))
-				c.Abort()
-			}
-			c.Next(ctx)
-		},
-		func(c context.Context, ctx *app.RequestContext) {
-			ctx.HTML(consts.StatusOK, "about", utils.H{"title": "About"})
-		})
+	h.GET("/about", func(c context.Context, ctx *app.RequestContext) {
+		ctx.HTML(consts.StatusOK, "about", utils.H{"title": "About"})
+	})
 
 	h.GET("/sign-in", func(c context.Context, ctx *app.RequestContext) {
 		rsp := utils.H{
@@ -98,6 +91,9 @@ func registerMiddleware(h *server.Hertz) {
 		panic(err)
 	}
 	h.Use(sessions.New("YZZ", store))
+
+	// global middleware
+	h.Use(mw.GlobalAuth())
 
 	// log
 	logger := hertzlogrus.NewLogger()
