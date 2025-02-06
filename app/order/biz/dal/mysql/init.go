@@ -1,6 +1,10 @@
 package mysql
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/777continue/gomall/app/order/biz/model"
 	"github.com/777continue/gomall/app/order/conf"
 
 	"gorm.io/driver/mysql"

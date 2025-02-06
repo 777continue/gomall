@@ -1,7 +1,6 @@
 go 1.23.2
 
 use (
-	.
 	./app/cart
 	./app/checkout
 	./app/email
@@ -10,6 +9,7 @@ use (
 	./app/payment
 	./app/product
 	./app/user
+	./common
 	./demo/thrift
 	./rpc_gen
 )
