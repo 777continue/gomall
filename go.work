@@ -10,6 +10,5 @@ use (
 	./app/product
 	./app/user
 	./common
-	./demo/thrift
 	./rpc_gen
 )
