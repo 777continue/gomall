@@ -2,10 +2,13 @@ package main
 
 import (
 	"net"
+	"strings"
 
 	"github.com/777continue/gomall/app/order/biz/dal"
 	"github.com/777continue/gomall/app/order/conf"
 	"github.com/777continue/gomall/common/mtl"
+	"github.com/777continue/gomall/common/serversuite"
+	"github.com/777continue/gomall/common/utils"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/order/orderservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"
@@ -39,16 +42,16 @@ func main() {
 func kitexInit() (opts []server.Option) {
 	// address
 	address := conf.GetConf().Kitex.Address
-	/*if strings.HasPrefix(address, ":") {
+	if strings.HasPrefix(address, ":") {
 		localIp := utils.MustGetLocalIPv4()
 		address = localIp + address
-	}*/
+	}
 	addr, err := net.ResolveTCPAddr("tcp", address)
 	if err != nil {
 		panic(err)
 	}
 	opts = append(opts, server.WithServiceAddr(addr))
 
-	///opts = append(opts, server.WithSuite(serversuite.CommonServerSuite{CurrentServiceName: serviceName, RegistryAddr: conf.GetConf().Registry.RegistryAddress[0]}))
+	opts = append(opts, server.WithSuite(serversuite.CommonServerSuite{CurrentServiceName: serviceName, RegistryAddr: conf.GetConf().Registry.RegistryAddress[0]}))
 	return
 }
