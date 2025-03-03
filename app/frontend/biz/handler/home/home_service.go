@@ -35,6 +35,6 @@ func Home(ctx context.Context, c *app.RequestContext) {
 	//midware resp
 	resp["user_id"] = ctx.Value(frontendUtils.SessionUserId)
 
-	c.HTML(consts.StatusOK, "home", resp)
+	c.JSON(consts.StatusOK, resp)
 
 }

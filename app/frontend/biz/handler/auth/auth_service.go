@@ -21,14 +21,16 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
-
-	redirect, err := service.NewLoginService(ctx, c).Run(&req)
+	token, redirect, err := service.NewLoginService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
-	//c.Redirect(consts.StatusFound, []byte("/"))
-	c.Redirect(consts.StatusFound, []byte(redirect))
+
+	c.JSON(consts.StatusOK, map[string]interface{}{
+		"token":    token,
+		"redirect": redirect,
+	})
 }
 
 // Register .

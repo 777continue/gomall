@@ -4,7 +4,6 @@ package main
 
 import (
 	"context"
-	"os"
 	"time"
 
 	"github.com/777continue/gomall/app/frontend/biz/router"
@@ -27,8 +26,6 @@ import (
 	"github.com/hertz-contrib/logger/accesslog"
 	hertzlogrus "github.com/hertz-contrib/logger/logrus"
 	"github.com/hertz-contrib/pprof"
-	"github.com/hertz-contrib/sessions"
-	"github.com/hertz-contrib/sessions/redis"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -94,11 +91,11 @@ func addRouter(h *server.Hertz) { //
 }
 func registerMiddleware(h *server.Hertz) {
 	//redis session
-	store, err := redis.NewStore(10, "tcp", conf.GetConf().Redis.Address, "", []byte(os.Getenv("SESSION_SECRET")))
+	/*store, err := redis.NewStore(10, "tcp", conf.GetConf().Redis.Address, "", []byte(os.Getenv("SESSION_SECRET")))
 	if err != nil {
 		panic(err)
 	}
-	h.Use(sessions.New("YZZ", store))
+	h.Use(sessions.New("YZZ", store))*/
 
 	// global middleware
 	h.Use(mw.GlobalAuth())
