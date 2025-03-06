@@ -4,7 +4,6 @@ package user;
 
 option go_package = "/user";
 
-
 message RegisterReq {
     string email = 1;
     string password = 2;
@@ -13,6 +12,7 @@ message RegisterReq {
 
 message RegisterResp {
     int32 user_id = 1;
+    string  Token = 2;
 }
 
 message LoginReq {
@@ -23,9 +23,40 @@ message LoginReq {
 message LoginResp {
     int32 user_id = 1;
     string  Token = 2;
+    bool isAdmin = 3;
+}
+
+message ListUserReq {
+}
+
+message User {
+  int32 user_id = 1;
+  string email = 2;
+  bool isAdmin = 3;
+}
+message ListUserResp {
+    repeated User users = 1;
+}
+
+message AddUserReq {
+    string email = 1;
+    string password = 2;
+    bool isAdmin = 3;
+}
+message AddUserResp {
+  
+}
+message DeleteUserReq {
+    int32 user_id = 1;
+}
+message DeleteUserResp {
+  
 }
 
 service UserService {
   rpc Register (RegisterReq) returns (RegisterResp) {}
   rpc Login (LoginReq) returns (LoginResp) {}
+  rpc ListUser (ListUserReq) returns (ListUserResp) {}
+  rpc AddUser (AddUserReq) returns (AddUserResp) {}
+  rpc DeleteUser (DeleteUserReq) returns (DeleteUserResp) {}
 }

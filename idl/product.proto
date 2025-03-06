@@ -4,12 +4,6 @@ package product;
 
 option go_package ="/product";
 
-service ProductCatalogService {
-    rpc ListProducts(ListProductsReq) returns (ListProductsResp) {} ;
-    rpc GetProduct(GetProductReq) returns (GetProductResp) {};
-    rpc SearchProducts (SearchProductsReq) returns (SearchProductsResp) {} ;
-}
-
 message ListProductsReq {
     int32 page = 1;
     int32 page_size = 2;
@@ -22,8 +16,9 @@ message Product {
     string description = 3;
     string picture = 4;
     float price = 5;
+    uint32 stock = 6;
 
-    repeated string categories = 6;
+    repeated string categories = 7;
 }
 
 message ListProductsResp {
@@ -44,4 +39,44 @@ message SearchProductsReq {
 
 message SearchProductsResp {
     repeated Product results = 1;
+}
+
+message AddProductReq {
+    string name = 1;
+    string description = 2;
+    bytes picture = 3;
+    float price = 4;
+    uint32 stock = 5;
+} 
+
+message AddProductResp {
+}
+
+message UpdateProductReq {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+    bytes picture = 4;
+    float price = 5;
+    uint32 stock = 6;
+}
+
+message UpdateProductResp {
+}
+
+message DeleteProductReq {
+    uint32 id = 1;
+}
+message DeleteProductResp {
+    
+}
+
+
+service ProductCatalogService {
+    rpc ListProducts(ListProductsReq) returns (ListProductsResp) {} ;
+    rpc GetProduct(GetProductReq) returns (GetProductResp) {};
+    rpc SearchProducts (SearchProductsReq) returns (SearchProductsResp) {} ;
+    rpc AddProduct (AddProductReq) returns (AddProductResp) {} ;
+    rpc UpdateProduct (UpdateProductReq) returns (UpdateProductResp) {} ;
+    rpc DeleteProduct (DeleteProductReq) returns (DeleteProductResp) {} ;
 }

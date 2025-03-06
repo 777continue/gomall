@@ -25,3 +25,30 @@ func Login(ctx context.Context, req *user.LoginReq, callOptions ...callopt.Optio
 	}
 	return resp, nil
 }
+
+func ListUser(ctx context.Context, req *user.ListUserReq, callOptions ...callopt.Option) (resp *user.ListUserResp, err error) {
+	resp, err = Client.ListUser(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "ListUser call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func AddUser(ctx context.Context, req *user.AddUserReq, callOptions ...callopt.Option) (resp *user.AddUserResp, err error) {
+	resp, err = Client.AddUser(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "AddUser call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func DeleteUser(ctx context.Context, req *user.DeleteUserReq, callOptions ...callopt.Option) (resp *user.DeleteUserResp, err error) {
+	resp, err = Client.DeleteUser(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "DeleteUser call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}

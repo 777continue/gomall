@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/777continue/gomall/app/user/biz/dal"
+	casbin "github.com/777continue/gomall/app/user/biz/infra"
 	"github.com/777continue/gomall/app/user/conf"
 	"github.com/777continue/gomall/common/mtl"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/user/userservice"
@@ -25,6 +26,7 @@ var (
 )
 
 func main() {
+	casbin.InitCasbin()
 	mtl.InitMetric(serviceName, MetricsPort, registryAddr)
 	err := godotenv.Load()
 	if err != nil {

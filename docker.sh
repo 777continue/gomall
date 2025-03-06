@@ -16,6 +16,15 @@ for pid in $pids; do
     kill $pid 2>/dev/null
 done
 
+# 获取所有监听3306端口的进程ID
+pids=$(netstat -tulnp | grep :6379 | awk '{print $7}' | sed 's/\/.*$//')
+
+# 循环遍历所有PID，并杀掉它们
+for pid in $pids; do
+    echo "Killing process with PID: $pid"
+    kill $pid 2>/dev/null
+done
+
 # 等待一段时间，确保进程被杀掉
 sleep 2
 

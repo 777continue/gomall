@@ -11,6 +11,7 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./db/sql:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
   redis:
     image: "redis:latest"
     ports:
@@ -36,3 +37,5 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     ports:
       - "3000:3000"
+volumes:
+  mysql_data:

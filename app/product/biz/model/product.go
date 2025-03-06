@@ -12,12 +12,12 @@ import (
 
 type Product struct {
 	gorm.Model
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Picture     string  `json:"picture"`
-	Price       float32 `json:"price"`
-
-	Categories []Category `json:"categories" gorm:"many2many:product_category"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Picture     string     `json:"picture"`
+	Price       float32    `json:"price"`
+	Stock       uint32     `json:"stock"`
+	Categories  []Category `json:"categories" gorm:"many2many:product_category"`
 }
 
 func (p Product) TableName() string {
@@ -27,6 +27,13 @@ func (p Product) TableName() string {
 type ProductQuery struct {
 	ctx context.Context
 	db  *gorm.DB
+}
+
+func NewProductQuery(ctx context.Context, db *gorm.DB) *ProductQuery {
+	return &ProductQuery{
+		ctx: ctx,
+		db:  db,
+	}
 }
 
 func (p ProductQuery) GetById(productId int) (product Product, err error) {
@@ -41,11 +48,19 @@ func (p ProductQuery) SearchProducts(q string) (products []*Product, err error) 
 	return
 }
 
-func NewProductQuery(ctx context.Context, db *gorm.DB) *ProductQuery {
-	return &ProductQuery{
-		ctx: ctx,
-		db:  db,
-	}
+func (p ProductQuery) AddProduct(product *Product) {
+	p.db.WithContext(p.ctx).Model(&Product{}).Create(product)
+}
+
+func (p ProductQuery) UpdateProduct(productId int, updates map[string]interface{}) error {
+	return p.db.WithContext(p.ctx).Model(&Product{}).
+		Where("id = ?", productId).
+		Select("*").
+		Updates(updates).Error
+}
+
+func (p ProductQuery) DeleteProduct(productId int) {
+	p.db.WithContext(p.ctx).Model(&Product{}).Delete(&Product{}, productId)
 }
 
 type CachedProductQuery struct {
@@ -54,7 +69,12 @@ type CachedProductQuery struct {
 	prefix       string
 }
 
+func NewCachedProductQuery(pq ProductQuery, cacheClient *redis.Client) CachedProductQuery {
+	return CachedProductQuery{productQuery: pq, cacheClient: cacheClient, prefix: "YZZ"}
+}
+
 func (c CachedProductQuery) GetById(productId int) (product Product, err error) {
+	// get from cache
 	cacheKey := fmt.Sprintf("%s_%s_%d", c.prefix, "product_by_id", productId)
 	cachedResult := c.cacheClient.Get(c.productQuery.ctx, cacheKey)
 
@@ -73,7 +93,7 @@ func (c CachedProductQuery) GetById(productId int) (product Product, err error) 
 		}
 		return nil
 	}()
-
+	// get from db
 	if err != nil {
 		product, err = c.productQuery.GetById(productId)
 		if err != nil {
@@ -86,8 +106,4 @@ func (c CachedProductQuery) GetById(productId int) (product Product, err error) 
 		_ = c.cacheClient.Set(c.productQuery.ctx, cacheKey, encoded, time.Hour)
 	}
 	return
-}
-
-func NewCachedProductQuery(pq ProductQuery, cacheClient *redis.Client) CachedProductQuery {
-	return CachedProductQuery{productQuery: pq, cacheClient: cacheClient, prefix: "cloudwego_shop"}
 }
