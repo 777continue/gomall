@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package frontend.user;
+
+import "api.proto";
+
+option go_package = "frontend/user";
+
+message User {
+  int32 user_id = 1;
+  string email = 2;
+  bool isAdmin = 3;
+}
+
+message ListUserReq {}
+
+message ListUserResp {
+  repeated User users = 1;
+}
+
+message AddUserReq {
+  string email = 1 [(api.form)="email"];
+  string password = 2 [(api.form)="password"];
+  bool isAdmin = 3 [(api.form)="isAdmin"];
+}
+
+message AddUserResp {}
+
+message DeleteUserReq {
+  int32 user_id = 1 [(api.path)="user_id"];
+}
+
+message DeleteUserResp {}
+
+service UserManageService {
+  rpc ListUser(ListUserReq) returns(ListUserResp) {
+    option (api.get) = "/users";
+  }
+  
+  rpc AddUser(AddUserReq) returns(AddUserResp) {
+    option (api.post) = "/users";
+  }
+  
+  rpc DeleteUser(DeleteUserReq) returns(DeleteUserResp) {
+    option (api.delete) = "/users/{user_id}";
+  }
+}

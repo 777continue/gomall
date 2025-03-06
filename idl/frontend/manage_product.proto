@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package frontend.product;
+
+import "api.proto";
+
+option go_package = "frontend/MNproduct";
+
+message Product {
+  uint32 id = 1;
+  string name = 2;
+  string description = 3;
+  string picture = 4;
+  float price = 5;
+  uint32 stock = 6;
+  repeated string categories = 7;
+}
+
+message AddProductReq {
+  string name = 1 [(api.form)="name"];
+  string description = 2 [(api.form)="description"];
+  bytes picture = 3 [(api.form)="picture"];
+  float price = 4 [(api.form)="price"];
+  uint32 stock = 5 [(api.form)="stock"];
+}
+
+message AddProductResp {}
+
+message UpdateProductReq {
+  uint32 id = 1 [(api.path)="id"];
+  string name = 2 [(api.form)="name"];
+  string description = 3 [(api.form)="description"];
+  bytes picture = 4 [(api.form)="picture"];
+  float price = 5 [(api.form)="price"];
+  uint32 stock = 6 [(api.form)="stock"];
+}
+
+message UpdateProductResp {}
+
+message DeleteProductReq {
+  uint32 id = 1 [(api.path)="id"];
+}
+
+message DeleteProductResp {}
+
+service ProductManageService {
+  rpc AddProduct(AddProductReq) returns(AddProductResp) {
+    option (api.post) = "/products";
+  }
+  
+  rpc UpdateProduct(UpdateProductReq) returns(UpdateProductResp) {
+    option (api.put) = "/products/{id}";
+  }
+  
+  rpc DeleteProduct(DeleteProductReq) returns(DeleteProductResp) {
+    option (api.delete) = "/products/{id}";
+  }
+}
