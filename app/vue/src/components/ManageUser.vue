@@ -1,3 +1,4 @@
+
 <template>
     <div class="container mt-4">
       <h2 class="mb-4">用户管理</h2>
@@ -54,7 +55,9 @@
   </template>
   
   <script>
+  import { Modal } from 'bootstrap';
   export default {
+
     data() {
       return {
         users: [],

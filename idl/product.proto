@@ -4,11 +4,6 @@ package product;
 
 option go_package ="/product";
 
-message ListProductsReq {
-    int32 page = 1;
-    int32 page_size = 2;
-    string category_name = 3;
-}
 
 message Product {
     uint32 id = 1;
@@ -47,6 +42,7 @@ message AddProductReq {
     bytes picture = 3;
     float price = 4;
     uint32 stock = 5;
+    repeated string categories = 6;
 } 
 
 message AddProductResp {
@@ -59,6 +55,25 @@ message UpdateProductReq {
     bytes picture = 4;
     float price = 5;
     uint32 stock = 6;
+    repeated string categories = 7;
+}
+message ListCategoriesReq {
+    
+}
+message ListCategoriesResp {
+    repeated string categories = 1;
+}
+message AddCategoryReq {
+    string name = 1;
+}
+message AddCategoryResp {
+    
+}
+message DeleteCategoryReq {
+    string name = 1;
+}
+message DeleteCategoryResp {
+    
 }
 
 message UpdateProductResp {
@@ -79,4 +94,7 @@ service ProductCatalogService {
     rpc AddProduct (AddProductReq) returns (AddProductResp) {} ;
     rpc UpdateProduct (UpdateProductReq) returns (UpdateProductResp) {} ;
     rpc DeleteProduct (DeleteProductReq) returns (DeleteProductResp) {} ;
+    rpc AddCategory (AddCategoryReq) returns (AddCategoryResp) {} ;
+    rpc DeleteCategory (DeleteCategoryReq) returns (DeleteCategoryResp) {} ;
+    rpc ListCategories (ListCategoriesReq) returns (ListCategoriesResp) {} ;
 }

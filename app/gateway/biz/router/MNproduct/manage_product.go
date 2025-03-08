@@ -17,7 +17,12 @@ import (
 func Register(r *server.Hertz) {
 
 	root := r.Group("/", rootMw()...)
+	root.GET("/categories", append(_listcategoriesMw(), MNproduct.ListCategories)...)
+	_categories := root.Group("/categories", _categoriesMw()...)
+	_categories.DELETE("/{category}", append(_deletecategoryMw(), MNproduct.DeleteCategory)...)
+	root.POST("/categories", append(_addcategoryMw(), MNproduct.AddCategory)...)
 	root.POST("/products", append(_addproductMw(), MNproduct.AddProduct)...)
+	root.GET("/products", append(_listproductsMw(), MNproduct.ListProducts)...)
 	_products := root.Group("/products", _productsMw()...)
 	_products.PUT("/{id}", append(_updateproductMw(), MNproduct.UpdateProduct)...)
 	_products.DELETE("/{id}", append(_deleteproductMw(), MNproduct.DeleteProduct)...)

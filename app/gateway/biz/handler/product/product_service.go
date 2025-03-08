@@ -27,7 +27,7 @@ func GetProduct(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	c.HTML(consts.StatusOK, "product", resp)
+	c.JSON(consts.StatusOK, resp)
 }
 
 // SearchProducts .
@@ -47,5 +47,5 @@ func SearchProducts(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	c.HTML(consts.StatusOK, "search", resp)
+	c.JSON(consts.StatusOK, resp)
 }

@@ -42,7 +42,7 @@
                 <li><router-link class="dropdown-item" to="/orders">订单中心</router-link></li>
                 <li><a class="dropdown-item" @click="logout">退出</a></li>
                 <li v-if="isAdmin"><router-link class="dropdown-item" to="/manage-user">用户管理</router-link></li>
-                <li v-if="isAdmin"><router-link class="dropdown-item" to="/admin">商品管理</router-link></li>
+                <li v-if="isAdmin"><router-link class="dropdown-item" to="/manage-product">商品管理</router-link></li>
               </ul>
             </div>
           </div>
@@ -75,7 +75,7 @@
     },
     methods: {
       search() {
-        this.$router.push({ path: 'http://localhost:8080//search', query: { q: this.searchQuery } });
+        this.$router.push({ path: 'http://localhost:8080/search', query: { q: this.searchQuery } });
       },
       async logout() {
         try {

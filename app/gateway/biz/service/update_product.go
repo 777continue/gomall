@@ -20,12 +20,12 @@ func NewUpdateProductService(Context context.Context, RequestContext *app.Reques
 
 func (h *UpdateProductService) Run(req *MNproduct.UpdateProductReq) (resp *MNproduct.UpdateProductResp, err error) {
 	_, err = rpc_product.Client.UpdateProduct(h.Context, &product.UpdateProductReq{
-		Id:          req.Id,
 		Name:        req.Name,
 		Description: req.Description,
 		Picture:     req.Picture,
 		Price:       req.Price,
 		Stock:       req.Stock,
+		Categories:  req.Categories,
 	})
 	if err != nil {
 		return nil, err

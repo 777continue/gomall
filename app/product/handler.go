@@ -50,3 +50,24 @@ func (s *ProductCatalogServiceImpl) DeleteProduct(ctx context.Context, req *prod
 
 	return resp, err
 }
+
+// AddCategory implements the ProductCatalogServiceImpl interface.
+func (s *ProductCatalogServiceImpl) AddCategory(ctx context.Context, req *product.AddCategoryReq) (resp *product.AddCategoryResp, err error) {
+	resp, err = service.NewAddCategoryService(ctx).Run(req)
+
+	return resp, err
+}
+
+// DeleteCategory implements the ProductCatalogServiceImpl interface.
+func (s *ProductCatalogServiceImpl) DeleteCategory(ctx context.Context, req *product.DeleteCategoryReq) (resp *product.DeleteCategoryResp, err error) {
+	resp, err = service.NewDeleteCategoryService(ctx).Run(req)
+
+	return resp, err
+}
+
+// ListCategories implements the ProductCatalogServiceImpl interface.
+func (s *ProductCatalogServiceImpl) ListCategories(ctx context.Context, req *product.ListCategoriesReq) (resp *product.ListCategoriesResp, err error) {
+	resp, err = service.NewListCategoriesService(ctx).Run(req)
+
+	return resp, err
+}

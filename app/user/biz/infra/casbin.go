@@ -17,6 +17,7 @@ var (
 func InitCasbin() {
 	var err error
 	once.Do(func() {
+
 		EF, err = casbin.NewEnforcer(modelPath, policyPath)
 	})
 	if err != nil {

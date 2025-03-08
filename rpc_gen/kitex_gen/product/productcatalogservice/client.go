@@ -17,6 +17,9 @@ type Client interface {
 	AddProduct(ctx context.Context, Req *product.AddProductReq, callOptions ...callopt.Option) (r *product.AddProductResp, err error)
 	UpdateProduct(ctx context.Context, Req *product.UpdateProductReq, callOptions ...callopt.Option) (r *product.UpdateProductResp, err error)
 	DeleteProduct(ctx context.Context, Req *product.DeleteProductReq, callOptions ...callopt.Option) (r *product.DeleteProductResp, err error)
+	AddCategory(ctx context.Context, Req *product.AddCategoryReq, callOptions ...callopt.Option) (r *product.AddCategoryResp, err error)
+	DeleteCategory(ctx context.Context, Req *product.DeleteCategoryReq, callOptions ...callopt.Option) (r *product.DeleteCategoryResp, err error)
+	ListCategories(ctx context.Context, Req *product.ListCategoriesReq, callOptions ...callopt.Option) (r *product.ListCategoriesResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -76,4 +79,19 @@ func (p *kProductCatalogServiceClient) UpdateProduct(ctx context.Context, Req *p
 func (p *kProductCatalogServiceClient) DeleteProduct(ctx context.Context, Req *product.DeleteProductReq, callOptions ...callopt.Option) (r *product.DeleteProductResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteProduct(ctx, Req)
+}
+
+func (p *kProductCatalogServiceClient) AddCategory(ctx context.Context, Req *product.AddCategoryReq, callOptions ...callopt.Option) (r *product.AddCategoryResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.AddCategory(ctx, Req)
+}
+
+func (p *kProductCatalogServiceClient) DeleteCategory(ctx context.Context, Req *product.DeleteCategoryReq, callOptions ...callopt.Option) (r *product.DeleteCategoryResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.DeleteCategory(ctx, Req)
+}
+
+func (p *kProductCatalogServiceClient) ListCategories(ctx context.Context, Req *product.ListCategoriesReq, callOptions ...callopt.Option) (r *product.ListCategoriesResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.ListCategories(ctx, Req)
 }

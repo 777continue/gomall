@@ -30,6 +30,7 @@ func (h *AddProductService) Run(req *MNproduct.AddProductReq) (resp *MNproduct.A
 		Picture:     req.Picture,
 		Price:       req.Price,
 		Stock:       req.Stock,
+		Categories:  req.Categories,
 	})
 	if err != nil {
 		return nil, err

@@ -22,6 +22,7 @@ message AddProductReq {
   bytes picture = 3 [(api.form)="picture"];
   float price = 4 [(api.form)="price"];
   uint32 stock = 5 [(api.form)="stock"];
+  repeated string categories = 6 [(api.form)="categories"];
 }
 
 message AddProductResp {}
@@ -33,6 +34,7 @@ message UpdateProductReq {
   bytes picture = 4 [(api.form)="picture"];
   float price = 5 [(api.form)="price"];
   uint32 stock = 6 [(api.form)="stock"];
+  repeated string categories = 7 [(api.form)="categories"];
 }
 
 message UpdateProductResp {}
@@ -43,7 +45,35 @@ message DeleteProductReq {
 
 message DeleteProductResp {}
 
+message ListCategoriesReq {}
+
+message ListCategoriesResp {
+  repeated string categories = 1;
+}
+
+message AddCategoryReq {
+  string category = 1 [(api.form)="category"];
+}
+
+message AddCategoryResp {}
+
+message DeleteCategoryReq {
+  string category = 1 [(api.path)="category"];
+}
+message DeleteCategoryResp {}
+
+message ListProductsReq {
+  int32 page = 1;
+  int32 page_size = 2;
+  string category_name = 3;
+}
+message ListProductsResp {
+  repeated Product products = 1;
+}
 service ProductManageService {
+  rpc ListProducts(ListProductsReq) returns(ListProductsResp) {
+    option (api.get) = "/products";
+  }
   rpc AddProduct(AddProductReq) returns(AddProductResp) {
     option (api.post) = "/products";
   }
@@ -55,4 +85,15 @@ service ProductManageService {
   rpc DeleteProduct(DeleteProductReq) returns(DeleteProductResp) {
     option (api.delete) = "/products/{id}";
   }
+  rpc ListCategories(ListCategoriesReq) returns(ListCategoriesResp) {
+    option (api.get) = "/categories";
+  }
+
+  rpc AddCategory(AddCategoryReq) returns(AddCategoryResp) {
+    option (api.post) = "/categories";
+  }
+  rpc DeleteCategory(DeleteCategoryReq) returns(DeleteCategoryResp) {
+    option (api.delete) = "/categories/{category}";
+  }
+  
 }

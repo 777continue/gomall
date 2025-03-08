@@ -3,6 +3,9 @@ import SignUp from '@/components/SignUp.vue'
 import SignIn from '@/components/SignIn.vue'
 import Home from '@/components/Home.vue'
 import ManageUser from '@/components/ManageUser.vue'
+import Product from '@/components/Product.vue'
+import Category from './components/Category.vue'
+import ManageProduct from './components/ManageProduct.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -22,6 +25,18 @@ const router = createRouter({
         {
             path: '/manage-user',
             component: ManageUser
+        },
+        {
+            path: '/manage-product',
+            component: ManageProduct
+        },
+        {
+            path: '/product',
+            component: Product,
+        },
+        {
+            path: '/category/:type',
+            component: Category,
         },
         {
             path: '/:pathMatch(.*)*',

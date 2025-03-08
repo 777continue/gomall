@@ -45,3 +45,23 @@ func _getproductMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _categoriesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listcategoriesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _deletecategoryMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _addcategoryMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

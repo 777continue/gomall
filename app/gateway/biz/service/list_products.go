@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	frontend_product "github.com/777continue/gomall/app/frontend/hertz_gen/frontend_product"
+	MNproduct "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/MNproduct"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -16,7 +16,7 @@ func NewListProductsService(Context context.Context, RequestContext *app.Request
 	return &ListProductsService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *ListProductsService) Run(req *frontend_product.ListProductsReq) (resp *frontend_product.ListProductsResp, err error) {
+func (h *ListProductsService) Run(req *MNproduct.ListProductsReq) (resp *MNproduct.ListProductsResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
