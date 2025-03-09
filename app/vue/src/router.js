@@ -6,6 +6,7 @@ import ManageUser from '@/components/ManageUser.vue'
 import Product from '@/components/Product.vue'
 import Category from './components/Category.vue'
 import ManageProduct from './components/ManageProduct.vue'
+import Search from './components/Search.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -37,6 +38,10 @@ const router = createRouter({
         {
             path: '/category/:type',
             component: Category,
+        },
+        {
+            path: '/search',
+            component: Search,
         },
         {
             path: '/:pathMatch(.*)*',

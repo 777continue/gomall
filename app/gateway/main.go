@@ -102,6 +102,7 @@ func registerMiddleware(h *server.Hertz) {
 
 	// global middleware
 	h.Use(mw.GlobalAuth())
+	h.Use(mw.Cors())
 
 	// log
 	logger := hertzlogrus.NewLogger()

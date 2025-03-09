@@ -30,7 +30,13 @@
             <input class="form-control me-2" type="search" v-model="searchQuery" placeholder="搜索" aria-label="搜索">
             <button class="btn btn-outline-success" type="submit">搜索</button>
           </form>
-
+           <!-- 添加购物车数量显示 -->
+           <router-link to="/cart" class="btn position-relative">
+            <i class="fa-solid fa-cart-shopping fa-xl"></i>
+            <span v-if="cartNum > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ cartNum }}
+            </span>
+          </router-link>
           <div>
             <router-link v-if="!user_id" class="btn btn-primary ms-3" to="/sign-in">登录</router-link>
             <div v-else class="dropdown">
@@ -67,15 +73,17 @@
       return {
         user_id: localStorage.getItem('jwtToken') || null,
         searchQuery: '',
-        isAdmin: localStorage.getItem('admin') || false
+        isAdmin: localStorage.getItem('admin') || false,
+        cartNum: 0, // 购物车数量
       };
     },
     async mounted() {
       console.log('Initial user_id:', this.user_id); 
+      await this.fetchCartNum(); // 获取购物车数量
     },
     methods: {
-      search() {
-        this.$router.push({ path: 'http://localhost:8080/search', query: { q: this.searchQuery } });
+      async search() {
+        this.$router.push({ path: '/search', query: { q: this.searchQuery } });
       },
       async logout() {
         try {
@@ -85,6 +93,14 @@
           this.isAdmin = false;
         } catch (error) {
           console.error('登出失败:', error);
+        }
+      },
+      async fetchCartNum() {
+        try {
+          const response = await this.$http.get('http://localhost:8080/cart/num');
+          this.cartNum = response.data.num; 
+        } catch (error) {
+          console.error('获取购物车数量失败:', error);
         }
       },
     }

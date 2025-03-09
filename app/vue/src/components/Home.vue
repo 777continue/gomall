@@ -1,4 +1,4 @@
-<template>
+  <template>
     <div class="row">
       <div v-for="item in items" :key="item.id" class="card col-xl-3 col-lg-4 col-md-6 col-sm-12 p-5 border-0">
         <router-link :to="`/product?id=${item.id}`" class="btn">

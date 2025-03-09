@@ -6,6 +6,7 @@ import (
 
 	"github.com/777continue/gomall/app/product/biz/dal"
 	"github.com/777continue/gomall/app/product/conf"
+	"github.com/777continue/gomall/app/product/infra/es"
 	"github.com/777continue/gomall/common/mtl"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -28,6 +29,7 @@ func main() {
 	mtl.InitMetric(serviceName, MetricsPort, registryAddr)
 	_ = godotenv.Load()
 	dal.Init()
+	es.Init()
 	opts := kitexInit()
 
 	svr := productcatalogservice.NewServer(new(ProductCatalogServiceImpl), opts...)
