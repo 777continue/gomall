@@ -1,4 +1,10 @@
 <template>
+  <head>
+    <link rel="icon" href="/public/favicon.ico">
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        rel="stylesheet">
+  </head>
   <div id="app">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container">
@@ -45,7 +51,7 @@
                 <span>你好</span>
               </a>
               <ul class="dropdown-menu">
-                <li><router-link class="dropdown-item" to="/orders">订单中心</router-link></li>
+                <li><router-link class="dropdown-item" to="/order">订单中心</router-link></li>
                 <li><a class="dropdown-item" @click="logout">退出</a></li>
                 <li v-if="isAdmin"><router-link class="dropdown-item" to="/manage-user">用户管理</router-link></li>
                 <li v-if="isAdmin"><router-link class="dropdown-item" to="/manage-product">商品管理</router-link></li>
@@ -97,7 +103,7 @@
       },
       async fetchCartNum() {
         try {
-          const response = await this.$http.get('http://localhost:8080/cart/num');
+          const response = await this.$http.get('http://localhost:8080/cart');
           this.cartNum = response.data.num; 
         } catch (error) {
           console.error('获取购物车数量失败:', error);

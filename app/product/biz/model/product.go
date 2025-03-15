@@ -53,6 +53,20 @@ func (p ProductQuery) AddProduct(product *Product) {
 }
 
 func (p ProductQuery) UpdateProduct(productId int, updates map[string]interface{}) error {
+	if stock, ok := updates["stock"]; ok {
+		// 如果stock是负数，则减去该值
+		if stock.(int32) < 0 {
+			return p.db.WithContext(p.ctx).Model(&Product{}).
+				Where("id = ?", productId).
+				UpdateColumn("stock", gorm.Expr("stock - ?", -stock.(int32))).Error
+		}
+		// 如果stock是正数，则加上该值
+		return p.db.WithContext(p.ctx).Model(&Product{}).
+			Where("id = ?", productId).
+			UpdateColumn("stock", gorm.Expr("stock + ?", stock.(int32))).Error
+	}
+
+	// 其他字段正常更新
 	return p.db.WithContext(p.ctx).Model(&Product{}).
 		Where("id = ?", productId).
 		Select("*").

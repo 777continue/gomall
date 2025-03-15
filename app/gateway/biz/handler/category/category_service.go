@@ -26,5 +26,5 @@ func Category(ctx context.Context, c *app.RequestContext) {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
-	c.JSON(consts.StatusOK, resp)
+	c.JSON(consts.StatusOK, utils.WarpResponse(ctx, c, resp))
 }

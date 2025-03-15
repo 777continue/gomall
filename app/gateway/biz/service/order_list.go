@@ -16,12 +16,8 @@ import (
 
 type Consignee struct {
 	Email string
-
-	StreetAddress string
-	City          string
-	State         string
-	Country       string
-	ZipCode       int32
+	Addr  string
+	Name  string
 }
 
 type Order struct {
@@ -93,7 +89,7 @@ func (h *OrderListService) Run(req *common.Empty) (resp map[string]any, err erro
 			Items:       items,
 			CreatedDate: timeObj.Format("2006-01-02 15:04:05"),
 			OrderId:     v.OrderId,
-			Consignee:   Consignee{Email: v.Email},
+			Consignee:   Consignee{Addr: v.Address},
 		})
 	}
 

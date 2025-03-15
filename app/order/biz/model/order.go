@@ -22,12 +22,8 @@ import (
 
 type Consignee struct {
 	Email string
-
-	StreetAddress string
-	City          string
-	State         string
-	Country       string
-	ZipCode       int32
+	Name  string
+	Addr  string
 }
 
 type OrderState string
@@ -40,12 +36,11 @@ const (
 
 type Order struct {
 	gorm.Model
-	OrderId      string `gorm:"uniqueIndex;size:256"`
-	UserId       uint32
-	UserCurrency string
-	Consignee    Consignee   `gorm:"embedded"`
-	OrderItems   []OrderItem `gorm:"foreignKey:OrderIdRefer;references:OrderId"`
-	OrderState   OrderState
+	OrderId    string `gorm:"uniqueIndex;size:256"`
+	UserId     uint32
+	Consignee  Consignee   `gorm:"embedded"`
+	OrderItems []OrderItem `gorm:"foreignKey:OrderIdRefer;references:OrderId"`
+	OrderState OrderState
 }
 
 func (o Order) TableName() string {

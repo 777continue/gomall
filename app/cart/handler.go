@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
-	cart "github.com/777continue/gomall/rpc_gen/kitex_gen/cart"
+
 	"github.com/777continue/gomall/app/cart/biz/service"
+	cart "github.com/777continue/gomall/rpc_gen/kitex_gen/cart"
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 // CartServiceImpl implements the last service interface defined in the IDL.
@@ -11,6 +13,7 @@ type CartServiceImpl struct{}
 
 // AddItem implements the CartServiceImpl interface.
 func (s *CartServiceImpl) AddItem(ctx context.Context, req *cart.AddItemReq) (resp *cart.AddItemResp, err error) {
+	klog.Info("call CartService.handle")
 	resp, err = service.NewAddItemService(ctx).Run(req)
 
 	return resp, err

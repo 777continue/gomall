@@ -28,7 +28,7 @@ email:  # command
 
 .PHONY: gen-gateway
 gen-gateway:
-	@cd app/gateway && cwgo server  --type HTTP --service frontend --module github.com/777continue/gomall/app/frontend --idl ../../idl/frontend/manage_product.proto -I ../../idl
+	@cd app/gateway && cwgo server  --type HTTP --service frontend --module github.com/777continue/gomall/app/frontend --idl ../../idl/frontend/checkout_page.proto -I ../../idl
 
 .PHONY: gen-user
 gen-user:

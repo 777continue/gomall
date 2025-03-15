@@ -47,5 +47,5 @@ func SearchProducts(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	c.JSON(consts.StatusOK, resp)
+	c.JSON(consts.StatusOK, utils.WarpResponse(ctx, c, resp))
 }

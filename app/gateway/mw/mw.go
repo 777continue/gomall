@@ -2,12 +2,13 @@ package mw
 
 import (
 	"context"
-	"errors"
-	"fmt"
-	"os"
+	"strings"
+	"time"
 
+	TokenUtils "github.com/777continue/gomall/app/frontend/biz/token"
 	frontendUtils "github.com/777continue/gomall/app/frontend/utils"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -34,10 +35,34 @@ func Cors() app.HandlerFunc {
 }
 func GlobalAuth() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		tokenString := string(c.GetHeader("Authorization"))
+		hlog.Info("GlobalAuth")
+		tokenString := string(c.GetHeader("authorization"))
+		hlog.Infof("tokenString: %v", tokenString)
+		if len(tokenString) > 7 && strings.HasPrefix(strings.ToLower(tokenString), "bearer ") {
+			tokenString = tokenString[7:]
+		}
+		hlog.Infof("tokenString: %v", tokenString)
 		if tokenString != "" {
-			if userId, err := validateToken(tokenString); err == nil {
+			userId, err := TokenUtils.ValidateToken(tokenString)
+			if err == nil {
 				ctx = context.WithValue(ctx, frontendUtils.SessionUserId, userId)
+				hlog.Infof("token validate success, userId: %v", userId)
+				// 解析token获取过期时间
+				token, _ := jwt.Parse(tokenString, nil)
+				if claims, ok := token.Claims.(jwt.MapClaims); ok {
+					exp := int64(claims["exp"].(float64))
+					now := time.Now().Unix()
+
+					// 如果token即将过期（剩余时间小于30分钟），则续期
+					if exp-now < 1800 {
+						newToken, err := TokenUtils.GenerateToken(userId, time.Now().Add(time.Hour*24).Unix())
+						if err == nil {
+							c.Header("X-Renewed-Token", newToken)
+						}
+					}
+				}
+			} else {
+				hlog.Infof("token error: %v", err)
 			}
 		}
 		c.Next(ctx)
@@ -46,44 +71,17 @@ func GlobalAuth() app.HandlerFunc {
 
 func Auth() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
+
 		userId := ctx.Value(frontendUtils.SessionUserId)
+		hlog.Infof("userId: %v", userId)
 		if userId == nil {
-			c.Redirect(302, []byte("/sign-in?next="+c.FullPath()))
+			c.JSON(401, map[string]interface{}{
+				"code":    401,
+				"message": "Unauthorized: Please login first",
+			})
 			c.Abort()
 			return
 		}
 		c.Next(ctx)
 	}
-}
-
-// 校验 JWT 的函数
-func validateToken(tokenString string) (int, error) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// 验证签名方法
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		// 从环境变量获取JWT密钥
-		jwtSecret := os.Getenv("JWT_SECRET_KEY")
-		if jwtSecret == "" {
-			return nil, errors.New("JWT_SECRET_KEY environment variable not set")
-		}
-		return []byte(jwtSecret), nil
-	})
-
-	// 处理解析错误
-	if err != nil {
-		return 0, err
-	}
-
-	// 验证token是否有效
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		// 获取用户ID
-		if userId, ok := claims["userId"].(float64); ok {
-			return int(userId), nil
-		}
-		return 0, errors.New("invalid user ID in token")
-	}
-
-	return 0, errors.New("invalid token")
 }

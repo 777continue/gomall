@@ -45,11 +45,13 @@
         try {
           const response = await this.$http.get('http://localhost:8080/cart');
           this.items = response.data.items;
-          this.total = response.data.total;
+          this.total = response.data.total
         } catch (error) {
-          console.error('获取购物车数据失败:', error);
+            console.error('搜索失败:', error);
+            alert('搜索失败，请稍后重试。');
         }
       },
+
     },
   };
   </script>

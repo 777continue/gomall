@@ -35,6 +35,6 @@ func Home(ctx context.Context, c *app.RequestContext) {
 	//midware resp
 	resp["user_id"] = ctx.Value(frontendUtils.SessionUserId)
 
-	c.JSON(consts.StatusOK, resp)
+	c.JSON(consts.StatusOK, utils.WarpResponse(ctx, c, resp))
 
 }

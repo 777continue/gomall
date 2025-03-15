@@ -87,15 +87,20 @@ export default {
     }
   },
   methods: {
-    addToCart() {
-      const productData = {
-        id: this.item.id,
-        quantity: this.quantity
+    async addToCart() {
+      const formData = new FormData();
+      formData.append('productId', this.item.id);
+      formData.append('productNum', this.quantity);
+
+      const response = await this.$http.post('http://localhost:8080/cart', formData );
+      if (response) {
+          this.$router.push('/cart');
+      } else {
+          throw new Error('Failed to add item to cart');
       }
-      console.log('Adding to cart:', productData)
-    }
-  }
-}
+    },  
+  },
+};
 </script>
 <style scoped>
 /* 可以添加自定义样式 */

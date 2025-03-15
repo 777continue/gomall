@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/777continue/gomall/app/product/biz/dal"
+	"github.com/777continue/gomall/app/product/biz/dal/mysql"
 	"github.com/777continue/gomall/app/product/conf"
 	"github.com/777continue/gomall/app/product/infra/es"
 	"github.com/777continue/gomall/common/mtl"
@@ -30,6 +31,7 @@ func main() {
 	_ = godotenv.Load()
 	dal.Init()
 	es.Init()
+	klog.Infof("mysql.DB : %v", mysql.DB)
 	opts := kitexInit()
 
 	svr := productcatalogservice.NewServer(new(ProductCatalogServiceImpl), opts...)

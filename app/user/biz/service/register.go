@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/777continue/gomall/app/frontend/biz/token"
 	"github.com/777continue/gomall/app/user/biz/dal/mysql"
 	casbin "github.com/777continue/gomall/app/user/biz/infra"
 	"github.com/777continue/gomall/app/user/biz/model"
@@ -42,7 +43,7 @@ func (s *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 
 	casbin.EF.AddRoleForUser(newUser.Email, "user")
 
-	tokenString, err := GenerateToken(newUser, time.Now().Add(time.Hour*24).Unix())
+	tokenString, err := token.GenerateToken(uint32(newUser.ID), time.Now().Add(time.Hour*24).Unix())
 	if err != nil {
 		return nil, err
 	}

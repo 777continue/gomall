@@ -8,7 +8,7 @@ package checkout
 
 import (
 	context "context"
-	payment "github.com/777continue/gomall/rpc_gen/kitex_gen/payment"
+	_ "github.com/777continue/gomall/rpc_gen/kitex_gen/payment"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -27,12 +27,8 @@ type CheckoutReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId     uint32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Firstname  string                  `protobuf:"bytes,2,opt,name=firstname,proto3" json:"firstname,omitempty"`
-	Lastname   string                  `protobuf:"bytes,3,opt,name=lastname,proto3" json:"lastname,omitempty"`
-	Email      string                  `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	Address    *Address                `protobuf:"bytes,5,opt,name=address,proto3" json:"address,omitempty"`
-	CreditCard *payment.CreditCardInfo `protobuf:"bytes,6,opt,name=credit_card,json=creditCard,proto3" json:"credit_card,omitempty"`
+	UserId  uint32 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 }
 
 func (x *CheckoutReq) Reset() {
@@ -74,116 +70,9 @@ func (x *CheckoutReq) GetUserId() uint32 {
 	return 0
 }
 
-func (x *CheckoutReq) GetFirstname() string {
-	if x != nil {
-		return x.Firstname
-	}
-	return ""
-}
-
-func (x *CheckoutReq) GetLastname() string {
-	if x != nil {
-		return x.Lastname
-	}
-	return ""
-}
-
-func (x *CheckoutReq) GetEmail() string {
-	if x != nil {
-		return x.Email
-	}
-	return ""
-}
-
-func (x *CheckoutReq) GetAddress() *Address {
+func (x *CheckoutReq) GetAddress() string {
 	if x != nil {
 		return x.Address
-	}
-	return nil
-}
-
-func (x *CheckoutReq) GetCreditCard() *payment.CreditCardInfo {
-	if x != nil {
-		return x.CreditCard
-	}
-	return nil
-}
-
-type Address struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	StreetAddress string `protobuf:"bytes,1,opt,name=street_address,json=streetAddress,proto3" json:"street_address,omitempty"`
-	City          string `protobuf:"bytes,2,opt,name=city,proto3" json:"city,omitempty"`
-	State         string `protobuf:"bytes,3,opt,name=state,proto3" json:"state,omitempty"`
-	Country       string `protobuf:"bytes,4,opt,name=country,proto3" json:"country,omitempty"`
-	ZipCode       string `protobuf:"bytes,5,opt,name=zip_code,json=zipCode,proto3" json:"zip_code,omitempty"`
-}
-
-func (x *Address) Reset() {
-	*x = Address{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_checkout_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *Address) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Address) ProtoMessage() {}
-
-func (x *Address) ProtoReflect() protoreflect.Message {
-	mi := &file_checkout_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Address.ProtoReflect.Descriptor instead.
-func (*Address) Descriptor() ([]byte, []int) {
-	return file_checkout_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Address) GetStreetAddress() string {
-	if x != nil {
-		return x.StreetAddress
-	}
-	return ""
-}
-
-func (x *Address) GetCity() string {
-	if x != nil {
-		return x.City
-	}
-	return ""
-}
-
-func (x *Address) GetState() string {
-	if x != nil {
-		return x.State
-	}
-	return ""
-}
-
-func (x *Address) GetCountry() string {
-	if x != nil {
-		return x.Country
-	}
-	return ""
-}
-
-func (x *Address) GetZipCode() string {
-	if x != nil {
-		return x.ZipCode
 	}
 	return ""
 }
@@ -200,7 +89,7 @@ type CheckoutResp struct {
 func (x *CheckoutResp) Reset() {
 	*x = CheckoutResp{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_checkout_proto_msgTypes[2]
+		mi := &file_checkout_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -213,7 +102,7 @@ func (x *CheckoutResp) String() string {
 func (*CheckoutResp) ProtoMessage() {}
 
 func (x *CheckoutResp) ProtoReflect() protoreflect.Message {
-	mi := &file_checkout_proto_msgTypes[2]
+	mi := &file_checkout_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -226,7 +115,7 @@ func (x *CheckoutResp) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckoutResp.ProtoReflect.Descriptor instead.
 func (*CheckoutResp) Descriptor() ([]byte, []int) {
-	return file_checkout_proto_rawDescGZIP(), []int{2}
+	return file_checkout_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CheckoutResp) GetOrderId() string {
@@ -248,30 +137,11 @@ var File_checkout_proto protoreflect.FileDescriptor
 var file_checkout_proto_rawDesc = []byte{
 	0x0a, 0x0e, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x6f, 0x75, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x12, 0x08, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x6f, 0x75, 0x74, 0x1a, 0x0d, 0x70, 0x61, 0x79, 0x6d,
-	0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xdd, 0x01, 0x0a, 0x0b, 0x43, 0x68,
-	0x65, 0x63, 0x6b, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65,
-	0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72,
-	0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x66, 0x69, 0x72, 0x73, 0x74, 0x6e, 0x61, 0x6d, 0x65, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x66, 0x69, 0x72, 0x73, 0x74, 0x6e, 0x61, 0x6d, 0x65,
-	0x12, 0x1a, 0x0a, 0x08, 0x6c, 0x61, 0x73, 0x74, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x6c, 0x61, 0x73, 0x74, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05,
-	0x65, 0x6d, 0x61, 0x69, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61,
-	0x69, 0x6c, 0x12, 0x2b, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x05, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x6f, 0x75, 0x74, 0x2e, 0x41,
-	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12,
-	0x38, 0x0a, 0x0b, 0x63, 0x72, 0x65, 0x64, 0x69, 0x74, 0x5f, 0x63, 0x61, 0x72, 0x64, 0x18, 0x06,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x43,
-	0x72, 0x65, 0x64, 0x69, 0x74, 0x43, 0x61, 0x72, 0x64, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x0a, 0x63,
-	0x72, 0x65, 0x64, 0x69, 0x74, 0x43, 0x61, 0x72, 0x64, 0x22, 0x8f, 0x01, 0x0a, 0x07, 0x41, 0x64,
-	0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x25, 0x0a, 0x0e, 0x73, 0x74, 0x72, 0x65, 0x65, 0x74, 0x5f,
-	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x73,
-	0x74, 0x72, 0x65, 0x65, 0x74, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x12, 0x0a, 0x04,
-	0x63, 0x69, 0x74, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x63, 0x69, 0x74, 0x79,
-	0x12, 0x14, 0x0a, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72,
-	0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79,
-	0x12, 0x19, 0x0a, 0x08, 0x7a, 0x69, 0x70, 0x5f, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x05, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x07, 0x7a, 0x69, 0x70, 0x43, 0x6f, 0x64, 0x65, 0x22, 0x50, 0x0a, 0x0c, 0x43,
+	0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x40, 0x0a, 0x0b, 0x43, 0x68, 0x65,
+	0x63, 0x6b, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x71, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49,
+	0x64, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x50, 0x0a, 0x0c, 0x43,
 	0x68, 0x65, 0x63, 0x6b, 0x6f, 0x75, 0x74, 0x52, 0x65, 0x73, 0x70, 0x12, 0x19, 0x0a, 0x08, 0x6f,
 	0x72, 0x64, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6f,
 	0x72, 0x64, 0x65, 0x72, 0x49, 0x64, 0x12, 0x25, 0x0a, 0x0e, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61,
@@ -301,23 +171,19 @@ func file_checkout_proto_rawDescGZIP() []byte {
 	return file_checkout_proto_rawDescData
 }
 
-var file_checkout_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_checkout_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_checkout_proto_goTypes = []interface{}{
-	(*CheckoutReq)(nil),            // 0: checkout.CheckoutReq
-	(*Address)(nil),                // 1: checkout.Address
-	(*CheckoutResp)(nil),           // 2: checkout.CheckoutResp
-	(*payment.CreditCardInfo)(nil), // 3: payment.CreditCardInfo
+	(*CheckoutReq)(nil),  // 0: checkout.CheckoutReq
+	(*CheckoutResp)(nil), // 1: checkout.CheckoutResp
 }
 var file_checkout_proto_depIdxs = []int32{
-	1, // 0: checkout.CheckoutReq.address:type_name -> checkout.Address
-	3, // 1: checkout.CheckoutReq.credit_card:type_name -> payment.CreditCardInfo
-	0, // 2: checkout.CheckoutService.Checkout:input_type -> checkout.CheckoutReq
-	2, // 3: checkout.CheckoutService.Checkout:output_type -> checkout.CheckoutResp
-	3, // [3:4] is the sub-list for method output_type
-	2, // [2:3] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	0, // 0: checkout.CheckoutService.Checkout:input_type -> checkout.CheckoutReq
+	1, // 1: checkout.CheckoutService.Checkout:output_type -> checkout.CheckoutResp
+	1, // [1:2] is the sub-list for method output_type
+	0, // [0:1] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_checkout_proto_init() }
@@ -339,18 +205,6 @@ func file_checkout_proto_init() {
 			}
 		}
 		file_checkout_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Address); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_checkout_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CheckoutResp); i {
 			case 0:
 				return &v.state
@@ -369,7 +223,7 @@ func file_checkout_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_checkout_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

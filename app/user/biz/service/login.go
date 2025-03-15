@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/777continue/gomall/app/frontend/biz/token"
 	"github.com/777continue/gomall/app/user/biz/dal/mysql"
 	casbin "github.com/777continue/gomall/app/user/biz/infra"
 	"github.com/777continue/gomall/app/user/biz/model"
@@ -39,7 +40,7 @@ func (s *LoginService) Run(req *user.LoginReq) (resp *user.LoginResp, err error)
 		return nil, err
 	}
 
-	tokenString, err := GenerateToken(row, time.Now().Add(time.Hour*24).Unix())
+	tokenString, err := token.GenerateToken(uint32(row.ID), time.Now().Add(time.Hour*24).Unix())
 	if err != nil {
 		return nil, err
 	}

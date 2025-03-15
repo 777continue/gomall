@@ -7,6 +7,10 @@ import Product from '@/components/Product.vue'
 import Category from './components/Category.vue'
 import ManageProduct from './components/ManageProduct.vue'
 import Search from './components/Search.vue'
+import Order from './components/Order.vue'
+import Cart from './components/Cart.vue'
+import CheckOut from './components/CheckOut.vue'
+import Waiting from './components/Waiting.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -42,6 +46,22 @@ const router = createRouter({
         {
             path: '/search',
             component: Search,
+        },
+        {
+            path: '/order',
+            component: Order
+        },
+        {
+            path: '/cart',
+            component: Cart
+        },
+        {
+            path: '/checkout',
+            component: CheckOut
+        },
+        {
+            path: '/waiting',
+            component: Waiting
         },
         {
             path: '/:pathMatch(.*)*',

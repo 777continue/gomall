@@ -23,6 +23,14 @@ func NewGetCartService(Context context.Context, RequestContext *app.RequestConte
 	return &GetCartService{RequestContext: RequestContext, Context: Context}
 }
 
+type CartItem struct {
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+	Picture     string  `json:"picture"`
+	Qty         int     `json:"qty"`
+}
+
 func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error) {
 	cartResp, err := cart_client.Client.GetCart(h.Context, &cart.GetCartReq{
 		UserId: uint32(frontendUtils.GetUserIdFromCtx(h.Context)),
@@ -30,8 +38,7 @@ func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error)
 	if err != nil {
 		return nil, err
 	}
-
-	var items []map[string]string
+	var items []*CartItem
 	var total float64
 	for _, item := range cartResp.Items {
 		productResp, err := product_client.Client.GetProduct(h.Context, &product.GetProductReq{Id: item.ProductId})
@@ -39,14 +46,18 @@ func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error)
 			continue
 		}
 		p := productResp.Product
-		items = append(items, map[string]string{
-			"Name":        p.Name,
-			"Description": p.Description,
-			"Price":       strconv.FormatFloat(float64(p.Price), 'f', 2, 64),
-			"Picture":     p.Picture,
-			"Qty":         strconv.Itoa(int(item.Quantity)),
-		})
-		total += float64(p.Price) * float64(item.Quantity)
+		price, _ := strconv.ParseFloat(strconv.FormatFloat(float64(p.Price), 'f', 2, 64), 64)
+		quantity := int(item.Quantity)
+
+		cartItem := &CartItem{
+			Name:        p.Name,
+			Description: p.Description,
+			Price:       price,
+			Picture:     p.Picture,
+			Qty:         quantity,
+		}
+		items = append(items, cartItem)
+		total += price * float64(quantity)
 
 	}
 	return utils.H{

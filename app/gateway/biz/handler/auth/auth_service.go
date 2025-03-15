@@ -7,6 +7,7 @@ import (
 	"github.com/777continue/gomall/app/frontend/biz/utils"
 	auth "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/auth"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
@@ -16,6 +17,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.LoginReq
 	err = c.BindAndValidate(&req)
+
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -39,6 +41,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req auth.RegisterReq
 	err = c.BindAndValidate(&req)
+	hlog.Infof("handle output req: %v", &req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

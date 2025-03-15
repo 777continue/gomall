@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/777continue/gomall/app/cart/biz/dal"
+	"github.com/777continue/gomall/app/cart/biz/dal/mysql"
 	"github.com/777continue/gomall/app/cart/conf"
 	"github.com/777continue/gomall/common/mtl"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/cart/cartservice"
@@ -28,22 +29,21 @@ var (
 func main() {
 	mtl.InitMetric(serviceName, MetricsPort, registryAddr)
 
-	err := godotenv.Load()
-
-	if err != nil {
-		klog.Error(err.Error())
-	}
+	_ = godotenv.Load()
 	dal.Init()
+	InitClient()
+	klog.Infof("mysql.DB : %v", mysql.DB)
 	opts := kitexInit()
 
 	svr := cartservice.NewServer(new(CartServiceImpl), opts...)
 
-	err = svr.Run()
+	err := svr.Run()
 	if err != nil {
 		klog.Error(err.Error())
 	}
+
 }
-func initClient() {
+func InitClient() {
 	product_client.DefaultClient()
 }
 

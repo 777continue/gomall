@@ -18,23 +18,18 @@ func (Cart) TableName() string {
 	return "cart"
 }
 
-func AddItem(ctx context.Context, db *gorm.DB, item *Cart) error {
-	var row Cart
-	err := db.WithContext(ctx).
-		Model(&Cart{}).
-		Where(&Cart{UserId: item.UserId, ProductId: item.ProductId}).
-		First(&row).Error
+func AddCart(ctx context.Context, db *gorm.DB, c *Cart) (err error) {
+	var find Cart
+	err = db.WithContext(ctx).Model(&Cart{}).Where(&Cart{UserId: c.UserId, ProductId: c.ProductId}).First(&find).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return err
 	}
-	if row.ID > 0 {
-		return db.WithContext(ctx).
-			Model(&Cart{}).
-			Where(&Cart{UserId: item.UserId, ProductId: item.ProductId}).
-			UpdateColumn("qty", gorm.Expr("qty+?", item.Qty)).Error
+	if find.ID != 0 {
+		err = db.WithContext(ctx).Model(&Cart{}).Where(&Cart{UserId: c.UserId, ProductId: c.ProductId}).UpdateColumn("qty", gorm.Expr("qty+?", c.Qty)).Error
+	} else {
+		err = db.WithContext(ctx).Model(&Cart{}).Create(c).Error
 	}
-
-	return db.WithContext(ctx).Create(item).Error
+	return err
 }
 
 func EmptyCart(ctx context.Context, db *gorm.DB, userId uint32) error {

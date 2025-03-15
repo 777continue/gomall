@@ -15,6 +15,7 @@ type GetProductService struct {
 	Context        context.Context
 }
 
+// var p *rpcproduct.Product
 func NewGetProductService(Context context.Context, RequestContext *app.RequestContext) *GetProductService {
 	return &GetProductService{RequestContext: RequestContext, Context: Context}
 }

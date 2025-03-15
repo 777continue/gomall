@@ -62,12 +62,12 @@ func InsertSample(DB *gorm.DB) {
 	}
 	DB.Create(&categories)
 	products := []model.Product{
-		{Model: gorm.Model{ID: 1}, Name: "candy", Description: "", Picture: "/static/image/candy.jpg", Price: 5.00},
-		{Model: gorm.Model{ID: 2}, Name: "chips", Description: "", Picture: "/static/image/chips.jpg", Price: 8.00},
-		{Model: gorm.Model{ID: 3}, Name: "coke", Description: "", Picture: "/static/image/coke.jpeg", Price: 3.50},
-		{Model: gorm.Model{ID: 4}, Name: "coke2", Description: "", Picture: "/static/image/coke2.jpeg", Price: 3.50},
-		{Model: gorm.Model{ID: 5}, Name: "latiao", Description: "", Picture: "/static/image/latiao.jpeg", Price: 6.00},
-		{Model: gorm.Model{ID: 6}, Name: "nut", Description: "", Picture: "/static/image/nut.jpeg", Price: 8.00},
+		{Model: gorm.Model{ID: 1}, Name: "candy", Description: "", Picture: "/static/image/candy.jpg", Price: 5.00, Stock: 999},
+		{Model: gorm.Model{ID: 2}, Name: "chips", Description: "", Picture: "/static/image/chips.jpg", Price: 8.00, Stock: 999},
+		{Model: gorm.Model{ID: 3}, Name: "coke", Description: "", Picture: "/static/image/coke.jpeg", Price: 3.50, Stock: 999},
+		{Model: gorm.Model{ID: 4}, Name: "coke2", Description: "", Picture: "/static/image/coke2.jpeg", Price: 3.50, Stock: 999},
+		{Model: gorm.Model{ID: 5}, Name: "latiao", Description: "", Picture: "/static/image/latiao.jpeg", Price: 6.00, Stock: 999},
+		{Model: gorm.Model{ID: 6}, Name: "nut", Description: "", Picture: "/static/image/nut.jpeg", Price: 8.00, Stock: 999},
 	}
 	DB.Create(&products)
 	DB.Exec("INSERT INTO `product`.`product_category` (product_id,category_id) VALUES ( 1, 1 ), ( 2, 1 ), ( 3, 2 ), ( 4, 2 ), ( 5, 1 ), ( 6, 1 )")

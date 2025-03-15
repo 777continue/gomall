@@ -8,6 +8,7 @@ import (
 	cart "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/cart"
 	common "github.com/777continue/gomall/app/frontend/hertz_gen/frontend/common"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
@@ -17,6 +18,7 @@ func AddCartItem(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req cart.AddCartItemReq
 	err = c.BindAndValidate(&req)
+	hlog.Infof("handle output req: %v", &req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -27,7 +29,6 @@ func AddCartItem(ctx context.Context, c *app.RequestContext) {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
-	c.Redirect(consts.StatusFound, []byte("/cart"))
 }
 
 // GetCart .
@@ -46,5 +47,6 @@ func GetCart(ctx context.Context, c *app.RequestContext) {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
-	c.HTML(consts.StatusOK, "cart", utils.WarpResponse(ctx, c, resp))
+
+	c.JSON(consts.StatusOK, utils.WarpResponse(ctx, c, resp))
 }

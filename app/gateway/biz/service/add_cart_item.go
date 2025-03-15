@@ -9,6 +9,7 @@ import (
 	rpccart "github.com/777continue/gomall/rpc_gen/kitex_gen/cart"
 	cart_client "github.com/777continue/gomall/rpc_gen/rpc/cart"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
 
 type AddCartItemService struct {
@@ -21,6 +22,7 @@ func NewAddCartItemService(Context context.Context, RequestContext *app.RequestC
 }
 
 func (h *AddCartItemService) Run(req *cart.AddCartItemReq) (resp *common.Empty, err error) {
+	hlog.Infof("add cart item: %v", req)
 	_, err = cart_client.Client.AddItem(h.Context, &rpccart.AddItemReq{
 		UserId: uint32(frontendUtils.GetUserIdFromCtx(h.Context)),
 		Item: &rpccart.CartItem{
@@ -29,6 +31,7 @@ func (h *AddCartItemService) Run(req *cart.AddCartItemReq) (resp *common.Empty, 
 		},
 	})
 	if err != nil {
+		hlog.Error("add cart item failed\t", err)
 		return nil, err
 	}
 	return

@@ -87,9 +87,6 @@ func addRouter(h *server.Hertz) { //
 	h.GET("/sign-up", func(c context.Context, ctx *app.RequestContext) {
 		ctx.HTML(consts.StatusOK, "sign-up", utils.H{"title": "Sign Up"})
 	})
-	h.POST("/check-admin", func(c context.Context, ctx *app.RequestContext) {
-
-	})
 
 }
 func registerMiddleware(h *server.Hertz) {

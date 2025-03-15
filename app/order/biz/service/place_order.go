@@ -30,20 +30,13 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrde
 		orderId, _ := uuid.NewUUID()
 
 		o := &model.Order{
-			OrderId:      orderId.String(),
-			OrderState:   model.OrderStatePlaced,
-			UserId:       req.UserId,
-			UserCurrency: req.UserCurrency,
+			OrderId:    orderId.String(),
+			OrderState: model.OrderStatePlaced,
+			UserId:     req.UserId,
 			Consignee: model.Consignee{
-				Email: req.Email,
+				Name: req.Name,
+				Addr: req.Address,
 			},
-		}
-		if req.Address != nil {
-			a := req.Address
-			o.Consignee.Country = a.Country
-			o.Consignee.State = a.State
-			o.Consignee.City = a.City
-			o.Consignee.StreetAddress = a.StreetAddress
 		}
 		if err := tx.Create(o).Error; err != nil {
 			return err
@@ -62,9 +55,7 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrde
 			return err
 		}
 		resp = &order.PlaceOrderResp{
-			Order: &order.OrderResult{
-				OrderId: orderId.String(),
-			},
+			OrderId: orderId.String(),
 		}
 
 		return nil
