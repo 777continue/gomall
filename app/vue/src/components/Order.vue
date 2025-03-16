@@ -45,7 +45,7 @@
     methods: {
       async fetchOrders() {
         try {
-          const response = await this.$http.get('http://localhost:8080/orders');
+          const response = await this.$http.get('http://localhost:8080/order');
           this.orders = response.data.orders; // 假设后端返回 { orders: 订单列表 }
         } catch (error) {
           console.error('获取订单失败:', error);

@@ -33,7 +33,7 @@ func (s *UpdateProductService) Run(req *product.UpdateProductReq) (resp *product
 		updates["price"] = req.Price
 	}
 	updates["stock"] = req.Stock
-	err = productQuery.UpdateProduct(int(req.Id), updates)
+	err = productQuery.UpdateProduct(uint(req.Id), updates)
 	if err != nil {
 		return nil, err
 	}

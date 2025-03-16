@@ -9,6 +9,7 @@ import (
 	"github.com/777continue/gomall/common/mtl"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
 	cart_client "github.com/777continue/gomall/rpc_gen/rpc/cart"
+	order_client "github.com/777continue/gomall/rpc_gen/rpc/order"
 	payment_client "github.com/777continue/gomall/rpc_gen/rpc/payment"
 	product_client "github.com/777continue/gomall/rpc_gen/rpc/product"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -45,6 +46,7 @@ func InitClient() {
 	payment_client.DefaultClient()
 	product_client.DefaultClient()
 	cart_client.DefaultClient()
+	order_client.DefaultClient()
 }
 
 func kitexInit() (opts []server.Option) {

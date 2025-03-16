@@ -12,6 +12,7 @@ require (
 	github.com/777continue/gomall/common v0.0.0-00010101000000-000000000000
 	github.com/777continue/gomall/rpc_gen v0.0.0-00010101000000-000000000000
 	github.com/cloudwego/hertz v0.9.3
+	github.com/cloudwego/kitex v0.12.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/hertz-contrib/cors v0.1.0
 	github.com/hertz-contrib/gzip v0.0.3
@@ -33,12 +34,10 @@ require (
 require (
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
 	github.com/bytedance/gopkg v0.1.1 // indirect
 	github.com/bytedance/sonic v1.12.5 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
-	github.com/casbin/govaluate v1.3.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
@@ -48,7 +47,6 @@ require (
 	github.com/cloudwego/frugal v0.2.3 // indirect
 	github.com/cloudwego/gopkg v0.1.3 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
-	github.com/cloudwego/kitex v0.12.1 // indirect
 	github.com/cloudwego/localsession v0.1.1 // indirect
 	github.com/cloudwego/netpoll v0.6.5 // indirect
 	github.com/cloudwego/runtimex v0.1.0 // indirect

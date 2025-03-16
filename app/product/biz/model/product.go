@@ -52,7 +52,7 @@ func (p ProductQuery) AddProduct(product *Product) {
 	p.db.WithContext(p.ctx).Model(&Product{}).Create(product)
 }
 
-func (p ProductQuery) UpdateProduct(productId int, updates map[string]interface{}) error {
+func (p ProductQuery) UpdateProduct(productId uint, updates map[string]interface{}) error {
 	if stock, ok := updates["stock"]; ok {
 		// 如果stock是负数，则减去该值
 		if stock.(int32) < 0 {

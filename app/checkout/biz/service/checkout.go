@@ -6,8 +6,10 @@ import (
 	"time"
 
 	"github.com/777continue/gomall/app/checkout/biz/dal/redis"
+	"github.com/777continue/gomall/app/checkout/infra/mq"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/cart"
 	checkout "github.com/777continue/gomall/rpc_gen/kitex_gen/checkout"
+	"github.com/777continue/gomall/rpc_gen/kitex_gen/email"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/order"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/payment"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/product"
@@ -17,6 +19,8 @@ import (
 	product_client "github.com/777continue/gomall/rpc_gen/rpc/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/nats-io/nats.go"
+	"google.golang.org/protobuf/proto"
 )
 
 type CheckoutService struct {
@@ -52,30 +56,38 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 	if err := s.ExecTransaction(req, cartResult, process); err != nil {
 		return nil, err
 	}
+	msg1 := &nats.Msg{
+		Subject: "cancel",
+		Data:    []byte(process.orderId),
+		Header:  nats.Header{},
+	}
+	msg1.Header.Set("Nats-Delay", "30m")
+	_ = mq.Nc.PublishMsg(msg1)
 	// call payment
 	payReq := &payment.ChargeReq{
 		UserId:  req.UserId,
 		OrderId: process.orderId,
 		Amount:  process.total,
 	}
-	_, err = payment_client.Client.Charge(s.ctx, payReq)
+	payResp, err := payment_client.Client.Charge(s.ctx, payReq)
 
 	if err != nil {
 		return nil, kerrors.NewBizStatusError(5004005, err.Error())
 	}
-
+	if payResp.Status == "success" {
+		msg1.Ack()
+	}
 	// TODO: impl GetUserEmail api
-
-	/*email, err := user_client.Client.GetUserEmail(s.ctx, &user.GetUserEmailReq{UserId: req.UserId})
-	data, _ := proto.Marshal(&email.EmailReq{
+	//email, err := user_client.Client.GetUserEmail(s.ctx, &user.GetUserEmailReq{UserId: req.UserId})
+	data2, _ := proto.Marshal(&email.EmailReq{
 		From:        "from@example.com",
-		To:          email,
+		To:          req.Email,
 		ContentType: "text/plain",
 		Subject:     "You just created an order in CloudWeGo shop",
 		Content:     "You just created an order in CloudWeGo shop",
 	})
-	msg := &nats.Msg{Subject: "email", Data: data}
-	_ = mq.Nc.PublishMsg(msg)*/
+	msg2 := &nats.Msg{Subject: "email", Data: data2}
+	_ = mq.Nc.PublishMsg(msg2)
 
 	return &checkout.CheckoutResp{
 		OrderId:       process.orderId,
@@ -108,17 +120,17 @@ func (s *CheckoutService) ExecTransaction(req *checkout.CheckoutReq, cartResult 
 		UserId:     req.UserId,
 		OrderItems: process.orderItems,
 	})
-	if orderResp != nil {
-		process.orderId = orderResp.OrderId
-	}
+
 	if err != nil {
 		// 回滚
-		if err := s.rollback(req, process); err != nil {
+		if err := s.rollback(process); err != nil {
 			return kerrors.NewGRPCBizStatusError(5004003, err.Error())
 		}
 		return kerrors.NewGRPCBizStatusError(5004004, err.Error())
 	}
-
+	if orderResp != nil {
+		process.orderId = orderResp.OrderId
+	}
 	// 提交
 	if err := s.commit(req, process); err != nil {
 		return kerrors.NewGRPCBizStatusError(5004005, err.Error())
@@ -148,11 +160,11 @@ func (s *CheckoutService) decStock(cartResult *cart.GetCartResp, process *checko
 		if productResp.Product == nil {
 			continue
 		}
-		if productResp.Product.Stock < cartItem.Quantity {
+		/*if productResp.Product.Stock < cartItem.Quantity {
 			return 0, nil, kerrors.NewGRPCBizStatusError(5004006,
 				fmt.Sprintf("product %d stock is not enough, available: %d, required: %d",
 					cartItem.ProductId, productResp.Product.Stock, cartItem.Quantity))
-		}
+		}*/
 		cost := productResp.Product.Price * float32(cartItem.Quantity)
 		total += cost
 
@@ -193,7 +205,7 @@ func (s *CheckoutService) commit(req *checkout.CheckoutReq, process *checkoutPro
 	return nil
 }
 
-func (s *CheckoutService) rollback(req *checkout.CheckoutReq, process *checkoutProcess) error {
+func (s *CheckoutService) rollback(process *checkoutProcess) error {
 	// TODO:  cancel order
 	for _, stockDec := range process.stockDec {
 		if val, err := redis.RedisClient.Get(s.ctx, stockDec.lockKey).Result(); err == nil && val == stockDec.lockValue {

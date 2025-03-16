@@ -2,15 +2,14 @@ package service
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"github.com/777continue/gomall/app/payment/biz/dal/mysql"
 	"github.com/777continue/gomall/app/payment/biz/model"
 	"github.com/777continue/gomall/rpc_gen/kitex_gen/payment"
 	"github.com/cloudwego/kitex/pkg/kerrors"
-	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"
+	"golang.org/x/exp/rand"
 )
 
 type ChargeService struct {
@@ -20,25 +19,26 @@ func NewChargeService(ctx context.Context) *ChargeService {
 	return &ChargeService{ctx: ctx}
 }
 
-// Run create note info
 func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, err error) {
-	// Finish your business logic.
-	card := creditcard.Card{
-		Number: req.CreditCard.CreditCardNumber,
-		Cvv:    strconv.Itoa(int(req.CreditCard.CreditCardCvv)),
-		Month:  strconv.Itoa(int(req.CreditCard.CreditCardExpirationMonth)),
-		Year:   strconv.Itoa(int(req.CreditCard.CreditCardExpirationYear)),
+	// 初始化随机数种子
+	rand.Seed(uint64(time.Now().UnixNano()))
+
+	// 生成随机状态
+	status := "success"
+	if rand.Intn(100) >= 60 {
+		status = "fail"
 	}
 
-	err = card.Validate(true)
-	if err != nil {
-		return nil, kerrors.NewGRPCBizStatusError(4004001, err.Error())
-	}
 	transactionId, err := uuid.NewRandom()
 	if err != nil {
 		return nil, kerrors.NewGRPCBizStatusError(4005001, err.Error())
 	}
-
+	if status == "fail" {
+		return &payment.ChargeResp{
+			TransactionId: transactionId.String(),
+			Status:        status, // 返回支付状态
+		}, nil
+	}
 	err = model.CreatePaymentLog(mysql.DB, s.ctx, &model.PaymentLog{
 		UserId:        req.UserId,
 		OrderId:       req.OrderId,
@@ -50,5 +50,8 @@ func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, e
 		return nil, kerrors.NewGRPCBizStatusError(4005002, err.Error())
 	}
 
-	return &payment.ChargeResp{TransactionId: transactionId.String()}, nil
+	return &payment.ChargeResp{
+		TransactionId: transactionId.String(),
+		Status:        status, // 返回支付状态
+	}, nil
 }
